@@ -13,8 +13,12 @@ import (
 	flag "github.com/spf13/pflag"
 )
 
+var (
+	respTimes []int64
+)
+
 // doGet returns a channel withe the request body
-func doGet(url string, ch chan<- string, counter int) {
+func doGet(url string, ch chan<- string, printRes bool, counter int) {
 
 	beginGet := time.Now()
 	c := &http.Client{}
@@ -24,14 +28,27 @@ func doGet(url string, ch chan<- string, counter int) {
 	}
 	defer resp.Body.Close()
 
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return
+	respTime := time.Since(beginGet).Nanoseconds()
+	respTimes = append(respTimes, respTime)
+
+	if printRes {
+		body, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			return
+		}
+		ch <- fmt.Sprintf("| Attempt: %d\t| Url: %s\t| Status: %s\t| Time: %d |\n%s\n", counter, url, resp.Status, respTime, string(body))
+	} else {
+		ch <- fmt.Sprintf("| Attempt: %d\t| Url: %s\t| Status: %s\t| Time: %d |\n", counter, url, resp.Status, respTime)
 	}
-	ch <- fmt.Sprintf(string(body))
+}
 
-	fmt.Printf("| Attempt: %d\t| Url: %s\t| Status: %s\t| Time: %d |\n", counter, url, resp.Status, time.Since(beginGet).Nanoseconds())
-
+// getAvg calculates the average response times
+func getAvg(s []int64) int64 {
+	var tot int64
+	for _, i := range s {
+		tot = tot + int64(i)
+	}
+	return tot / int64(len(s))
 }
 
 // verifyUrl performs a DNS lookup
@@ -92,24 +109,24 @@ func main() {
 	start := time.Now()
 	for i := 0; i < *numGet; i++ {
 		count++
-		go doGet(*customUrl, ch, count)
+		go doGet(*customUrl, ch, *printRes, count)
 	}
 
 	// Print results in order of completion
 	for i := 0; i < count; i++ {
-		if *printRes {
-			fmt.Println(<-ch)
-		} else {
-			<-ch
-		}
+		fmt.Print(<-ch)
 	}
+	close(ch)
 
 	// Store elapsed time
 	elapsed := time.Since(start).Nanoseconds()
+
+	// Store average time
+	average := getAvg(respTimes)
 
 	// Print results
 	fmt.Printf("\nBenchmark completed.\n")
 	fmt.Printf("Total number of requests:\t\t\t%d\n", count)
 	fmt.Printf("Total elapsed time in nanoseconds:\t\t%d\n", elapsed)
-
+	fmt.Printf("Average time in nanoseconds:\t\t\t%d\n", average)
 }

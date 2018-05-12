@@ -29,19 +29,22 @@ The expected output will be similar to this:
 Performing host DNS lookup...	Done
 Beginning benchmark...
 
-| Attempt: 6	| Url: http://www.example.com	| Status: 200 OK	| Time: 238172358 |
-| Attempt: 1	| Url: http://www.example.com	| Status: 200 OK	| Time: 242034046 |
-| Attempt: 7	| Url: http://www.example.com	| Status: 200 OK	| Time: 242244306 |
-| Attempt: 9	| Url: http://www.example.com	| Status: 200 OK	| Time: 246435924 |
-| Attempt: 3	| Url: http://www.example.com	| Status: 200 OK	| Time: 250223883 |
-| Attempt: 2	| Url: http://www.example.com	| Status: 200 OK	| Time: 250141894 |
-| Attempt: 4	| Url: http://www.example.com	| Status: 200 OK	| Time: 250140194 |
-| Attempt: 5	| Url: http://www.example.com	| Status: 200 OK	| Time: 254471200 |
-| Attempt: 10	| Url: http://www.example.com	| Status: 200 OK	| Time: 254644109 |
+| Attempt: 9	| Url: http://www.example.com	| Status: 200 OK	| Time: 188733434 |
+| Attempt: 5	| Url: http://www.example.com	| Status: 200 OK	| Time: 191321751 |
+| Attempt: 10	| Url: http://www.example.com	| Status: 200 OK	| Time: 200889381 |
+| Attempt: 4	| Url: http://www.example.com	| Status: 200 OK	| Time: 201985038 |
+| Attempt: 1	| Url: http://www.example.com	| Status: 200 OK	| Time: 203551875 |
+| Attempt: 3	| Url: http://www.example.com	| Status: 200 OK	| Time: 204738982 |
+| Attempt: 7	| Url: http://www.example.com	| Status: 200 OK	| Time: 217022760 |
+| Attempt: 2	| Url: http://www.example.com	| Status: 200 OK	| Time: 228276499 |
+| Attempt: 6	| Url: http://www.example.com	| Status: 200 OK	| Time: 238500664 |
+| Attempt: 8	| Url: http://www.example.com	| Status: 200 OK	| Time: 276821083 |
 
 Benchmark completed.
-Total number of requests:			10
-Total elapsed time in nanoseconds:		254687651
+Total number of requests:			    10
+Total elapsed time in nanoseconds:		277114982
+Average time in nanoseconds:			215184146
+
 ```
 
 The tool will beging with a DNS lookup test on the provided hostname. After the test the 
