@@ -1,6 +1,7 @@
 package main
 
 import (
+	"crypto/tls"
 	"fmt"
 	"io/ioutil"
 	"net"
@@ -15,13 +16,16 @@ import (
 
 var (
 	respTimes []int64
+	tr        = &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
 )
 
 // doGet returns a channel withe the request body
 func doGet(url string, ch chan<- string, printRes bool, counter int) {
 
 	beginGet := time.Now()
-	c := &http.Client{}
+	c := &http.Client{Transport: tr}
 	resp, err := c.Get(url)
 	if err != nil {
 		return
