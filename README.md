@@ -41,7 +41,7 @@ Beginning benchmark...
 | Attempt: 8	| Url: http://www.example.com	| Status: 200 OK	| Time: 276821083 |
 
 Benchmark completed.
-Total number of requests:			    10
+Total number of requests:			10
 Total elapsed time in nanoseconds:		277114982
 Average time in nanoseconds:			215184146
 
